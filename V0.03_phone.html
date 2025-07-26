@@ -7,7 +7,33 @@
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
     <style>
         @font-face { font-family: 'bulangni'; src: url('') format('truetype'); font-weight: normal; font-style: normal; font-display: swap; }
-        :root { --screen-width: 350px; --screen-height: 650px; --secondary-bg: #ffffff; --border-color: #e0e0e0; --text-primary: #1f1f1f; --text-secondary: #8a8a8a; --accent-color: #007bff; }
+        :root { 
+            --screen-width: 350px; 
+            --screen-height: 650px; 
+            /* 女孩二次元风格配色 */
+            --primary-pink: #ff69b4;
+            --secondary-pink: #ffb6c1;
+            --light-pink: #ffe4e1;
+            --purple: #da70d6;
+            --light-purple: #dda0dd;
+            --lavender: #e6e6fa;
+            --white: #ffffff;
+            --cream: #fff8dc;
+            --peach: #ffcccb;
+            
+            /* 主要变量重新定义 */
+            --secondary-bg: linear-gradient(135deg, var(--light-pink) 0%, var(--lavender) 50%, var(--light-purple) 100%);
+            --border-color: var(--secondary-pink);
+            --text-primary: #4a4a4a;
+            --text-secondary: #8b7d8b;
+            --accent-color: var(--primary-pink);
+            
+            /* 背景渐变 */
+            --background-gradient: linear-gradient(45deg, #ffeef8 0%, #f0e6ff 25%, #ffe6f2 50%, #f5f0ff 75%, #fff0f8 100%);
+            --header-gradient: linear-gradient(135deg, rgba(255, 182, 193, 0.9) 0%, rgba(221, 160, 221, 0.9) 100%);
+            --button-gradient: linear-gradient(135deg, var(--primary-pink) 0%, var(--purple) 100%);
+            --card-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 240, 245, 0.9) 100%);
+        }
         html { height: 100%; overflow: hidden; }
 
 /* ▼▼▼ 请用下面这【一整块】全新的代码，替换掉所有旧的 body, phone-frame, phone-screen 等样式 ▼▼▼ */
@@ -19,8 +45,8 @@ body {
     margin: 0;
     font-family: 'bulangni', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-weight: normal;
-    /* 背景色可以根据喜好设定，这里用一个柔和的颜色 */
-    background-color: #f0f2f5; 
+    background: var(--background-gradient);
+    background-attachment: fixed;
 }
 
 /* 2. 让 #phone-screen 成为新的“根”容器，撑满整个浏览器窗口 */
@@ -31,7 +57,35 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    background-color: #000; /* 保留一个默认的黑色背景 */
+    background: var(--background-gradient);
+    background-attachment: fixed;
+}
+
+/* 添加可爱的星星动画背景 */
+#phone-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, var(--primary-pink), transparent),
+        radial-gradient(2px 2px at 40px 70px, var(--purple), transparent),
+        radial-gradient(1px 1px at 90px 40px, var(--secondary-pink), transparent),
+        radial-gradient(1px 1px at 130px 80px, var(--light-purple), transparent),
+        radial-gradient(2px 2px at 160px 30px, var(--primary-pink), transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: sparkle 20s linear infinite;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes sparkle {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-100px); }
 }
 
 /* 3. 【核心】隐藏掉模拟器的状态栏 */
@@ -74,7 +128,25 @@ body {
         @keyframes charge-breath { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         .screen { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
         .screen.active { opacity: 1; visibility: visible; z-index: 1; }
-        .header { position: relative; z-index: 15; flex-shrink: 0; padding: 15px 20px; padding-top: 40px; background-color: rgba(247, 247, 247, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 600; }
+        .header { 
+            position: relative; 
+            z-index: 15; 
+            flex-shrink: 0; 
+            padding: 15px 20px; 
+            padding-top: 40px; 
+            background: var(--header-gradient); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px); 
+            border-bottom: 2px solid var(--secondary-pink); 
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(255, 105, 180, 0.3);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 18px; 
+            font-weight: 600;
+            color: var(--text-primary);
+        }
         .header .header-actions { display: flex; align-items: center; gap: 15px; }
         .header .back-btn, .header .action-btn { font-size: 24px; cursor: pointer; width: 30px; text-align: center; color: var(--accent-color); display: flex; align-items: center; justify-content: center; }
 
@@ -90,7 +162,7 @@ body {
         /* 用户头像样式 */
         .user-avatar-container {
             position: absolute;
-            top: 40px;
+            top: 32px;
             left: 18px;
         }
         /* 主聊天列表header布局调整 */
@@ -124,48 +196,57 @@ body {
         }
 
         .toggle-btn {
-            padding: 4px 8px;
+            padding: 6px 12px;
             border: none;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.7);
             color: var(--text-secondary);
             font-size: 12px;
-            border-radius: 14px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            min-width: 36px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            min-width: 40px;
             white-space: nowrap;
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
         }
 
         .toggle-btn.active {
-            background: var(--accent-color);
+            background: var(--button-gradient);
             color: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+            transform: translateY(-2px);
+            border: 2px solid var(--secondary-pink);
         }
 
         .toggle-btn:hover:not(.active) {
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(255, 182, 193, 0.6);
             color: var(--text-primary);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 10px rgba(255, 105, 180, 0.2);
         }
         .user-avatar {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             object-fit: cover;
             cursor: pointer;
-            border: 2px solid var(--border-color);
-            transition: all 0.2s ease;
-            background-color: #f0f0f0;
+            border: 3px solid var(--secondary-pink);
+            transition: all 0.3s ease;
+            background: var(--card-gradient);
+            box-shadow: 0 2px 10px rgba(255, 105, 180, 0.2);
         }
         
         .user-avatar:hover {
-            border-color: var(--accent-color);
-            transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+            border-color: var(--primary-pink);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 4px 20px rgba(255, 105, 180, 0.4);
+            filter: brightness(1.1);
         }
         
         .user-avatar:active {
-            transform: scale(0.95);
+            transform: scale(0.95) rotate(-2deg);
+            box-shadow: 0 2px 8px rgba(255, 105, 180, 0.6);
         }
         
         /* 下拉菜单样式 */
@@ -173,32 +254,35 @@ body {
             position: absolute;
             top: 100%;
             left: 0;
-            margin-top: 8px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--border-color);
-            min-width: 160px;
+            margin-top: 12px;
+            background: var(--card-gradient);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(255, 105, 180, 0.3);
+            border: 2px solid var(--secondary-pink);
+            min-width: 180px;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.2s ease;
+            transform: translateY(-15px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             z-index: 1000;
+            backdrop-filter: blur(15px);
         }
         
         .user-dropdown-menu.visible {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
         
         .dropdown-item {
             display: flex;
             align-items: center;
-            padding: 12px 16px;
+            padding: 15px 20px;
             cursor: pointer;
-            transition: background-color 0.2s ease;
-            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 182, 193, 0.3);
+            position: relative;
+            overflow: hidden;
         }
         
         .dropdown-item:last-child {
@@ -206,27 +290,60 @@ body {
         }
         
         .dropdown-item:first-child {
-            border-radius: 12px 12px 0 0;
+            border-radius: 18px 18px 0 0;
         }
         
         .dropdown-item:last-child {
-            border-radius: 0 0 12px 12px;
+            border-radius: 0 0 18px 18px;
         }
         
         .dropdown-item:hover {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.8), rgba(221, 160, 221, 0.8));
+            transform: translateX(5px);
+            box-shadow: inset 0 0 20px rgba(255, 105, 180, 0.3);
+        }
+        
+        .dropdown-item::before {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .dropdown-item:hover::before {
+            left: 100%;
         }
         
         .dropdown-item svg {
-            margin-right: 12px;
-            color: var(--accent-color);
+            margin-right: 15px;
+            color: var(--primary-pink);
             flex-shrink: 0;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(255, 105, 180, 0.3));
+        }
+        
+        .dropdown-item:hover svg {
+            color: white;
+            transform: scale(1.1) rotate(10deg);
+            filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.5));
         }
         
         .dropdown-item span {
             font-size: 14px;
             color: var(--text-primary);
-            font-weight: 500;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(255, 105, 180, 0.2);
+        }
+        
+        .dropdown-item:hover span {
+            color: white;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         /* 响应式设计适配 */
@@ -340,11 +457,84 @@ body {
         .form-container, .list-container { padding: 20px; overflow-y: auto; flex-grow: 1; display:flex; flex-direction: column; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-secondary); }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+        .form-group input, .form-group select, .form-group textarea { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px solid var(--secondary-pink); 
+            border-radius: 20px; 
+            font-size: 16px; 
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.02);
+        }
         .form-group textarea { min-height: 80px; resize: vertical; }
         #world-book-content-input { height: calc(100% - 120px); }
-        .form-button { width: 100%; padding: 15px; background-color: var(--accent-color); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; }
-        .form-button-secondary { background-color: #f0f0f0; color: var(--text-primary); border: 1px solid var(--border-color); }
+        .form-button { 
+            width: 100%; 
+            padding: 18px; 
+            background: var(--button-gradient); 
+            color: white; 
+            border: none; 
+            border-radius: 25px; 
+            font-size: 16px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            margin-top: 15px;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.6);
+            border-color: var(--secondary-pink);
+        }
+        
+        .form-button:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+        
+        .form-button::before {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .form-button:hover::before {
+            left: 100%;
+        }
+        
+        .form-button-secondary { 
+            background: rgba(255, 255, 255, 0.8); 
+            color: var(--primary-pink); 
+            border: 2px solid var(--secondary-pink);
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+        
+        .form-button-secondary:hover {
+            background: var(--card-gradient);
+            color: white;
+            border-color: var(--primary-pink);
+        }
         #wallpaper-screen .form-container { align-items: center; }
         #wallpaper-preview { width: 180px; height: 320px; border: 2px dashed var(--border-color); background-color: #f0f2f5; margin-bottom: 20px; background-size: cover; background-position: center; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: var(--text-secondary); }
         #wallpaper-upload-input { display: none; }
@@ -373,17 +563,37 @@ body {
         .chat-list-item { 
             display: flex; 
             align-items: center; 
-            padding: 10px 15px; 
+            padding: 15px 20px; 
             cursor: pointer; 
-            border-bottom: 1px solid var(--border-color); 
+            border-bottom: 1px solid rgba(255, 182, 193, 0.3); 
             position: relative;
-            transition: all 0.2s ease;
-            background-color: transparent;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            background: rgba(255, 255, 255, 0.6);
+            margin: 5px 10px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
         }
         .chat-list-item:hover { 
-            background-color: rgba(0, 0, 0, 0.04);
-            transform: translateX(2px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            background: var(--card-gradient);
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+            border: 2px solid var(--secondary-pink);
+        }
+        
+        .chat-list-item::before {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .chat-list-item:hover::before {
+            left: 100%;
         }
         .chat-list-item .name {
             font-weight: 700 !important;
@@ -392,7 +602,23 @@ body {
             letter-spacing: 0.5px !important;
             font-size: 16px !important;
         }
-        .chat-list-item .avatar { width: 45px; height: 45px; border-radius: 50%; margin-right: 12px; object-fit: cover; background-color: #ccc; }
+        .chat-list-item .avatar { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            margin-right: 15px; 
+            object-fit: cover; 
+            background: var(--card-gradient); 
+            border: 3px solid var(--secondary-pink);
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .chat-list-item:hover .avatar {
+            transform: scale(1.1) rotate(5deg);
+            border-color: var(--primary-pink);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.5);
+        }
         .chat-list-item .info { flex-grow: 1; overflow: hidden; }
         .chat-list-item .name-line { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
         .chat-list-item .name { font-weight: 500; color: var(--text-primary); }
@@ -477,18 +703,185 @@ body {
         #typing-indicator { align-self: flex-start; display: none; margin: 0 10px 10px; color: var(--text-secondary); }
         #chat-input-area { flex-shrink: 0; padding: 8px; background-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border-top: none; display: flex; flex-direction: column; gap: 5px; }
         #chat-input-main-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
-        #chat-input { flex-grow: 1; border: none; padding: 10px 15px; border-radius: 20px; background-color: var(--secondary-bg); font-size: 16px; max-height: 100px; resize: none; }
-        .action-button { border: none; color: white; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 14px; flex-shrink: 0; }
-        #send-btn { background-color: var(--accent-color); height: 40px; padding: 0 15px;}
-        .modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); display: none; justify-content: center; align-items: center; z-index: 100; }
-        .modal.visible { display: flex; }
-        .modal-content { width: 90%; max-height: 90%; background-color: white; border-radius: 15px; display: flex; flex-direction: column; }
-        .modal-header { padding: 15px; font-weight: 600; border-bottom: 1px solid var(--border-color); text-align: center; display: flex; justify-content: space-between; align-items: center; }
-        .modal-body { padding: 15px; overflow-y: auto; }
-        .modal-footer { padding: 15px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; }
-        .modal-footer button { width: 45%; padding: 12px; border-radius: 8px; border: 1px solid var(--accent-color); cursor: pointer; font-size: 16px; }
-        .modal-footer .save { background-color: var(--accent-color); color: white; }
-        .modal-footer .cancel { background-color: white; color: var(--accent-color); }
+        #chat-input { 
+            flex-grow: 1; 
+            border: 2px solid var(--secondary-pink); 
+            padding: 12px 18px; 
+            border-radius: 25px; 
+            background: rgba(255, 255, 255, 0.9); 
+            font-size: 16px; 
+            max-height: 100px; 
+            resize: none;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(255, 105, 180, 0.2);
+        }
+        
+        #chat-input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            box-shadow: 0 4px 20px rgba(255, 105, 180, 0.4);
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.02);
+        }
+        .action-button { 
+            border: none; 
+            color: white; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 14px; 
+            flex-shrink: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #send-btn { 
+            background: var(--button-gradient); 
+            height: 45px; 
+            padding: 0 20px;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+            border: 2px solid var(--secondary-pink);
+        }
+        
+        #send-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+            border-color: var(--primary-pink);
+        }
+        
+        #send-btn:active {
+            transform: translateY(0) scale(0.95);
+        }
+        
+        .action-button::before {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .action-button:hover::before {
+            left: 100%;
+        }
+        .modal { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.3), rgba(221, 160, 221, 0.3)); 
+            backdrop-filter: blur(15px);
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 100;
+        }
+        .modal.visible { 
+            display: flex;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content { 
+            width: 90%; 
+            max-height: 90%; 
+            background: var(--card-gradient); 
+            border-radius: 25px; 
+            display: flex; 
+            flex-direction: column;
+            border: 3px solid var(--secondary-pink);
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.4);
+            backdrop-filter: blur(20px);
+            animation: modalSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        @keyframes modalSlideIn {
+            from { 
+                transform: translateY(-50px) scale(0.8);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+        .modal-header { 
+            padding: 20px; 
+            font-weight: 700; 
+            border-bottom: 2px solid var(--secondary-pink); 
+            text-align: center; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(221, 160, 221, 0.3));
+            border-radius: 22px 22px 0 0;
+            color: var(--primary-pink);
+            text-shadow: 0 2px 4px rgba(255, 105, 180, 0.3);
+        }
+        .modal-body { 
+            padding: 20px; 
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .modal-footer { 
+            padding: 20px; 
+            border-top: 2px solid var(--secondary-pink); 
+            display: flex; 
+            justify-content: space-around;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(221, 160, 221, 0.3));
+            border-radius: 0 0 22px 22px;
+        }
+        .modal-footer button { 
+            width: 45%; 
+            padding: 15px; 
+            border-radius: 25px; 
+            border: 2px solid var(--secondary-pink); 
+            cursor: pointer; 
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modal-footer button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+        }
+        
+        .modal-footer .save { 
+            background: var(--button-gradient); 
+            color: white;
+            border-color: var(--primary-pink);
+        }
+        
+        .modal-footer .save:hover {
+            border-color: var(--secondary-pink);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+        }
+        
+        .modal-footer .cancel { 
+            background: rgba(255, 255, 255, 0.8); 
+            color: var(--primary-pink);
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-footer .cancel:hover {
+            background: var(--card-gradient);
+            color: white;
+            border-color: var(--primary-pink);
+        }
         .avatar-upload { display: flex; align-items: center; gap: 15px; }
         .avatar-upload img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; background-color: #eee; }
         .avatar-upload button { padding: 8px 12px; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 5px; cursor: pointer; }
@@ -925,8 +1318,6 @@ body {
     transition: font-family 0.3s ease;}
 
 /* === 聊天列表界面新增样式 (这是新添加的) === */
-#chat-list-screen {
-}
 
 .chat-list-view {
     position: absolute;
@@ -1548,9 +1939,7 @@ body {
 
 /* === 帖子内容区 - 相对定位容器 === */
 /* === 帖子内容区 === */
-.post-main-content {
-    /* 它现在只是一个普通的内容容器，不再需要特殊样式了 */
-}
+
 
 /* === 帖子互动图标区 (新样式) === */
 .post-feedback-icons {
@@ -4018,7 +4407,7 @@ body {
     line-height: 1.4;
     color: #1f1f1f;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -4089,333 +4478,12 @@ body {
 
 /* ▼▼▼ 把这一整块全新的CSS，粘贴到 <style> 的末尾 ▼▼▼ */
 
-/* === 【全新】夜间模式样式 === */
 
-/* 核心：当 #phone-screen 拥有 .dark-mode 类时，激活以下所有样式 */
 
-/* 1. 全局背景和文本颜色 */
-#phone-screen.dark-mode {
-    --secondary-bg: #1c1c1e; /* 主要卡片背景色 */
-    --border-color: #38383a;  /* 边框颜色 */
-    --text-primary: #ffffff;   /* 主要文字颜色 */
-    --text-secondary: #8d8d92; /* 次要文字/图标颜色 */
-}
-
-/* 2. 各个页面的主背景色 */
-#phone-screen.dark-mode #chat-list-screen,
-#phone-screen.dark-mode #qzone-screen .qzone-content,
-#phone-screen.dark-mode #memories-view {
-    background-color: #000000;
-}
-
-/* 3. 聊天列表 */
-#phone-screen.dark-mode #chat-list {
-    background-color: transparent; /* 改为透明，显示背景层 */
-}
-#phone-screen.dark-mode .chat-list-bg-layer {
-    background-color: #000000; /* 夜间模式下的默认背景色 */
-}
-#phone-screen.dark-mode .chat-list-item {
-    border-bottom-color: rgba(255, 255, 255, 0.15);
-}
-#phone-screen.dark-mode .chat-group-header {
-    background-color: #1c1c1e; /* 从白色改为深灰色 */
-    border-bottom: 1px solid #38383a; /* 给它一个细微的下边框 */
-}
-
-#phone-screen.dark-mode .chat-group-header:hover {
-    background-color: #2c2c2e;
-    transform: translateX(1px);
-}
-#phone-screen.dark-mode .chat-list-item .name,
-#phone-screen.dark-mode .chat-group-header .group-name {
-    color: #ffffff;
-}
-#phone-screen.dark-mode .chat-list-item:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    transform: translateX(2px);
-    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
-}
-
-/* 4. 顶部/底部导航栏 */
-#phone-screen.dark-mode .header,
-#phone-screen.dark-mode .qzone-header {
-    background-color: rgba(25, 25, 25, 0.9);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-bottom-color: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-}
-#phone-screen.dark-mode .header .back-btn,
-#phone-screen.dark-mode .header .action-btn,
-#phone-screen.dark-mode .header .save-btn {
-    color: #ffffff;
-}
-
-/* 暗色主题下的用户头像和下拉菜单样式 */
-#phone-screen.dark-mode .user-avatar {
-    border-color: #444444;
-}
-
-#phone-screen.dark-mode .user-avatar:hover {
-    border-color: #007bff;
-}
-
-#phone-screen.dark-mode .user-dropdown-menu {
-    background-color: #2d2d2d;
-    border-color: #444444;
-}
-
-#phone-screen.dark-mode .dropdown-item {
-    border-bottom-color: #444444;
-}
-
-#phone-screen.dark-mode .dropdown-item:hover {
-    background-color: #3d3d3d;
-}
-
-#phone-screen.dark-mode .dropdown-item span {
-    color: #ffffff;
-}
-
-#phone-screen.dark-mode .dropdown-item svg {
-    color: #007bff;
-}
-
-/* 添加菜单的夜间模式样式 */
-#phone-screen.dark-mode .add-dropdown-menu {
-    background-color: #2d2d2d;
-    border-color: #444444;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-#phone-screen.dark-mode .add-dropdown-menu .dropdown-item {
-    border-bottom-color: #444444;
-}
-
-#phone-screen.dark-mode .add-dropdown-menu .dropdown-item:hover {
-    background-color: #3d3d3d;
-}
-
-#phone-screen.dark-mode .add-dropdown-menu .dropdown-item span {
-    color: #ffffff;
-}
-
-#phone-screen.dark-mode .add-dropdown-menu .dropdown-item svg {
-    color: #007bff;
-}
-
-#phone-screen.dark-mode #chat-list-bottom-nav {
-    background-color: rgba(25, 25, 25, 0.9);
-    border-top-color: rgba(255, 255, 255, 0.15);
-}
-#phone-screen.dark-mode .nav-item.active {
-    color: #ffffff;
-}
-
-/* 5. 聊天界面 */
-#phone-screen.dark-mode #chat-input-area {
-    background-color: transparent;
-    border-top: none;
-}
-#phone-screen.dark-mode #chat-input {
-    background-color: #3e3e42;
-    color: #ffffff;
-}
-#phone-screen.dark-mode #chat-input::placeholder {
-    color: #8d8d92;
-}
-#phone-screen.dark-mode .chat-action-icon-btn {
-    color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: none;
-}
-#phone-screen.dark-mode #send-btn {
-    background-color: var(--accent-color);
-}
-
-/* 6. 动态 (QZone) 界面 */
-#phone-screen.dark-mode .qzone-actions-bar,
-#phone-screen.dark-mode .qzone-post-item {
-    background-color: #1c1c1e;
-    border: 1px solid #333;
-    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
-}
-#phone-screen.dark-mode .action-item:not(:last-child)::after {
-    background-color: #333;
-}
-#phone-screen.dark-mode .post-footer,
-#phone-screen.dark-mode .post-likes-section {
-    border-top-color: #333;
-}
-#phone-screen.dark-mode .post-likes-section {
-    background-color: rgba(0, 123, 255, 0.1);
-}
-#phone-screen.dark-mode .comment-input {
-    background-color: #333;
-    color: #ffffff;
-}
-#phone-screen.dark-mode .comment-input::placeholder {
-    color: #8d8d92;
-}
-#phone-screen.dark-mode .post-actions-btn:hover {
-    background-color: #333;
-}
-#phone-screen.dark-mode .at-mention-popup {
-    background-color: #1c1c1e;
-    border-color: #333;
-}
-#phone-screen.dark-mode .at-mention-item {
-    border-bottom-color: #333;
-}
-#phone-screen.dark-mode .at-mention-item:hover {
-    background-color: #333;
-}
-
-/* 7. 回忆录界面 */
-#phone-screen.dark-mode .memory-card {
-    background-color: #1c1c1e;
-    border-left-color: #e6a753;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
-}
-#phone-screen.dark-mode .memory-card .header {
-    background-color: #2c2c2e;
-    border-bottom-color: #38383a;
-    margin: -15px -15px 8px -15px;
-    padding: 12px 15px;
-    border-radius: 12px 12px 0 0;
-}
-#phone-screen.dark-mode .memory-card .header .date,
-#phone-screen.dark-mode .memory-card .header .author,
-#phone-screen.dark-mode .memory-card .content {
-    color: #e0e0e0;
-}
-
-/* 8. 其他设置和列表页 */
-#phone-screen.dark-mode #api-settings-screen,
-#phone-screen.dark-mode #font-settings-screen,
-#phone-screen.dark-mode #wallpaper-screen,
-#phone-screen.dark-mode #contact-picker-screen,
-#phone-screen.dark-mode #member-management-screen,
-#phone-screen.dark-mode #world-book-editor-screen,
-#phone-screen.dark-mode #world-book-list,
-#phone-screen.dark-mode .list-item:hover,
-#phone-screen.dark-mode .list-container,
-#phone-screen.dark-mode .form-container {
-    background-color: #000000;
-}
-#phone-screen.dark-mode .form-group input, 
-#phone-screen.dark-mode .form-group select, 
-#phone-screen.dark-mode .form-group textarea {
-    background-color: #1c1c1e;
-    color: #ffffff;
-    border-color: #38383a;
-}
-#phone-screen.dark-mode .form-button-secondary {
-    background-color: #333;
-    border-color: #555;
-    color: #fff;
-}
-#phone-screen.dark-mode #font-preview {
-    background-color: #1c1c1e;
-    border-color: #38383a;
-}
-#phone-screen.dark-mode #font-preview p {
-    color: #ffffff;
-}
-
-/* ▲▲▲ 粘贴结束 ▲▲▲ */
-
-/* ▼▼▼ 把这一整块【全新的修正CSS】，粘贴到 <style> 的末尾 ▼▼▼ */
-
-/* === 【全新】夜间模式视觉修正 === */
-
-/* 1. 修正动态卡片内的文字颜色 */
-#phone-screen.dark-mode .qzone-post-item .post-nickname,
-#phone-screen.dark-mode .qzone-post-item .post-content {
-    color: #f0f0f0; /* 从深灰色改为明亮的浅灰色 */
-}
-
-/* 2. 修正收藏卡片内的文字颜色 */
-#phone-screen.dark-mode .favorite-item-card .fav-card-header .name,
-#phone-screen.dark-mode .favorite-item-card .fav-card-content {
-    color: #f0f0f0; /* 同样改为浅灰色 */
-}
-#phone-screen.dark-mode .favorite-item-card .fav-card-header .source {
-    color: #8d8d92; /* 来源文字用次要灰色 */
-}
-
-/* 3. 修正收藏页的搜索栏背景和输入框样式 */
-#phone-screen.dark-mode .search-bar-container {
-    background-color: #000000; /* 容器背景变为纯黑 */
-}
-#phone-screen.dark-mode #favorites-search-input {
-    background-color: #1c1c1e; /* 输入框背景变为深灰 */
-    border-color: #38383a;     /* 边框颜色变暗 */
-    color: #ffffff;            /* 输入文字变为白色 */
-}
-#phone-screen.dark-mode #favorites-search-input::placeholder {
-    color: #8d8d92; /* 占位符文字颜色变暗 */
-}
-
-/* ▲▲▲ 修正CSS粘贴结束 ▲▲▲ */
 
 /* ▼▼▼ 把这一整块全新的CSS，粘贴到 <style> 的末尾 ▼▼▼ */
 
-/* === 【全新】iOS风格的Toggle Switch开关样式 === */
 
-/* 1. 开关的容器 */
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 51px;
-    height: 31px;
-}
-
-/* 2. 隐藏掉原始的 checkbox 输入框 */
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-/* 3. 开关的背景（那个椭圆） */
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #e9e9eb; /* 关闭时的背景色 */
-    transition: .4s;
-    border-radius: 34px;
-}
-
-/* 4. 开关上的圆点 */
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 27px;
-    width: 27px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-/* 5. 【核心】当 checkbox 被选中时（即开启状态） */
-input:checked + .slider {
-    background-color: #34c759; /* 开启时的背景色（iOS绿色）*/
-}
-
-input:checked + .slider:before {
-    transform: translateX(20px); /* 让圆点滑动到右边 */
-}
-
-/* ▲▲▲ 新CSS粘贴结束 ▲▲▲ */
 
 /* ▼▼▼ 【全新】引用回复功能样式 ▼▼▼ */
 
@@ -4432,9 +4500,7 @@ input:checked + .slider:before {
     color: var(--text-secondary);
 }
 
-#phone-screen.dark-mode #reply-preview-bar {
-    background-color: rgba(255, 255, 255, 0.1);
-}
+
 
 .reply-preview-content .sender {
     font-weight: 600;
@@ -4475,17 +4541,11 @@ input:checked + .slider:before {
     opacity: 0.8;
 }
 
-#phone-screen.dark-mode .quoted-message {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-left-color: #a0cff1;
-}
+
 
 .quoted-message .quoted-sender {
     font-weight: 600;
     color: var(--accent-color);
-}
-#phone-screen.dark-mode .quoted-message .quoted-sender {
-    color: #a0cff1;
 }
 
 .quoted-message .quoted-content {
@@ -4513,16 +4573,7 @@ input:checked + .slider:before {
     color: var(--text-primary);
 }
 
-/* 夜间模式下的修正样式 */
-#phone-screen.dark-mode #font-preview {
-    background-color: #1c1c1e; /* 深灰色背景 */
-    border-color: #38383a;     /* 暗色边框 */
-}
 
-/* 夜间模式下，预览框里的文字变为白色 */
-#phone-screen.dark-mode #font-preview p {
-    color: #ffffff;
-}
 
 /* ▼▼▼ 【全新】精致版转账操作弹窗样式 ▼▼▼ */
 .transfer-actions-content {
@@ -5313,15 +5364,7 @@ input:checked + .slider:before {
         <button class="form-button" onclick="document.getElementById('wallpaper-upload-input').click();">上传加载页壁纸</button>
         <input type="file" id="wallpaper-upload-input" accept="image/*">
 
-<!-- ▼▼▼ 将【上面整块代码】，完整替换为下面这段【全新的代码】 ▼▼▼ -->
-<div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
-    <label for="theme-toggle-switch" style="margin-bottom: 0;">夜间模式</label>
-    <label class="toggle-switch">
-        <input type="checkbox" id="theme-toggle-switch">
-        <span class="slider"></span>
-    </label>
-</div>
-<!-- ▲▲▲ 替换结束 ▲▲▲ -->
+
         
         <!-- 【核心修改2】新增图标设置区域 -->
         <hr style="width: 80%; opacity: 0.3; margin: 30px 0;">
@@ -7671,8 +7714,7 @@ function renderChatInterface(chatId) {
         chatScreen.style.backgroundImage = chat.settings.background ? `url(${chat.settings.background})` : 'none';
     }
 
-const isDarkMode = document.getElementById('phone-screen').classList.contains('dark-mode');
-chatScreen.style.backgroundColor = chat.settings.background ? 'transparent' : (isDarkMode ? '#000000' : '#f0f2f5');
+chatScreen.style.backgroundColor = chat.settings.background ? 'transparent' : '#f0f2f5';
     const history = chat.history;
     const totalMessages = history.length;
     currentRenderedCount = 0;
@@ -12559,35 +12601,7 @@ function filterVisiblePostsForAI(allPosts, viewerChat) {
     });
 }
 
-/**
- * 应用指定的主题（'light' 或 'dark'）
- * @param {string} theme - 要应用的主题名称
- */
-function applyTheme(theme) {
-    const phoneScreen = document.getElementById('phone-screen');
-    const toggleSwitch = document.getElementById('theme-toggle-switch');
-    
-    const isDark = theme === 'dark';
-    
-    phoneScreen.classList.toggle('dark-mode', isDark);
-    
-    // 如果开关存在，就同步它的状态
-    if (toggleSwitch) {
-        toggleSwitch.checked = isDark;
-    }
-    
-    localStorage.setItem('ephone-theme', theme);
-}
 
-/**
- * 切换当前的主题
- */
-function toggleTheme() {
-    const toggleSwitch = document.getElementById('theme-toggle-switch');
-    // 直接根据开关的选中状态来决定新主题
-    const newTheme = toggleSwitch.checked ? 'dark' : 'light';
-    applyTheme(newTheme);
-}
 
 // ▼▼▼ 请将这【一整块新函数】粘贴到你的JS功能函数定义区 ▼▼▼
 
@@ -12875,10 +12889,7 @@ async function showCallTranscript(recordId) {
         // ===================================================================
         async function init() {
 
-    // ▼▼▼ 在 init() 函数的【最开头】，粘贴下面这两行代码 ▼▼▼
-    const savedTheme = localStorage.getItem('ephone-theme') || 'light'; // 默认为日间模式
-    applyTheme(savedTheme);
-    // ▲▲▲ 粘贴结束 ▲▲▲
+
 
     // ▼▼▼ 新增代码 ▼▼▼
     const customBubbleStyleTag = document.createElement('style');
@@ -12947,43 +12958,59 @@ applyAppIcons();
 
 exitSelectionMode(); state.activeChatId = null; showScreen('chat-list-screen'); });
             
-            document.getElementById('add-friend-btn').addEventListener('click', async () => { const name = await showCustomPrompt('添加好友', '请输入Ta的名字'); if (name && name.trim()) { const newChatId = 'chat_' + Date.now(); 
-const newChat = { 
-    id: newChatId, 
-    name: name.trim(), 
-    isGroup: false,                         relationship: {
-                            status: 'friend', // 'friend', 'blocked_by_user', 'pending_user_approval'
-                            blockedTimestamp: null,
-                            applicationReason: ''
-                        },
-                        status: {
-                            text: '在线',
-                            lastUpdate: Date.now(),
-                            isBusy: false 
-                        },
-    settings: { 
-        aiPersona: '你是谁呀。', 
-        myPersona: '我是谁呀。', 
-        maxMemory: 10, 
-        aiAvatar: defaultAvatar, 
-        myAvatar: defaultAvatar, 
-        background: '', 
-        theme: 'default', 
-    fontSize: 13, 
-    customCss: '', // <--- 新增这行
-    linkedWorldBookIds: [], 
-    aiAvatarLibrary: [],
-    aiAvatarFrame: '', 
-        myAvatarFrame: '' 
-    }, 
-    history: [], 
-    musicData: { totalTime: 0 } 
-};
-state.chats[newChatId] = newChat; 
-await db.chats.put(newChat); 
-console.log('新好友已添加:', newChat.name, '总聊天数量:', Object.keys(state.chats).length);
-await renderChatList(); 
-} });
+            document.getElementById('add-friend-btn').addEventListener('click', async () => {
+                // 弹出提示框让用户输入好友姓名
+                const name = await showCustomPrompt('添加好友', '请输入好友姓名：');
+                
+                // 如果用户点击取消或没有输入姓名，则不创建好友
+                if (!name) {
+                    return;
+                }
+                
+                const newChatId = 'chat_' + Date.now();
+                const newChat = {
+                    id: newChatId,
+                    name: name, // 使用用户输入的名称
+                    isGroup: false,
+                    relationship: {
+                        status: 'friend', // 'friend', 'blocked_by_user', 'pending_user_approval'
+                        blockedTimestamp: null,
+                        applicationReason: ''
+                    },
+                    status: {
+                        text: '在线',
+                        lastUpdate: Date.now(),
+                        isBusy: false
+                    },
+                    settings: {
+                        aiPersona: '你是谁呀。',
+                        myPersona: '我是谁呀。',
+                        maxMemory: 10,
+                        aiAvatar: defaultAvatar,
+                        myAvatar: defaultAvatar,
+                        background: '',
+                        theme: 'default',
+                        fontSize: 13,
+                        customCss: '', // <--- 新增这行
+                        linkedWorldBookIds: [],
+                        aiAvatarLibrary: [],
+                        aiAvatarFrame: '',
+                        myAvatarFrame: ''
+                    },
+                    history: [],
+                    musicData: { totalTime: 0 }
+                };
+                
+                // 保存新聊天
+                state.chats[newChatId] = newChat;
+                await db.chats.put(newChat);
+                console.log('新好友已添加:', newChat.name, '总聊天数量:', Object.keys(state.chats).length);
+                await renderChatList();
+                
+                // 设置为当前活跃聊天并打开聊天设置窗口
+                state.activeChatId = newChatId;
+                document.getElementById('chat-settings-btn').click();
+            });
 
             // 用户头像和下拉菜单事件监听器
             const userAvatar = document.getElementById('user-avatar');
@@ -15038,7 +15065,7 @@ document.getElementById('icon-settings-grid').addEventListener('click', async (e
 
 // ▲▲▲ 新代码粘贴结束 ▲▲▲
 
-document.getElementById('theme-toggle-switch').addEventListener('change', toggleTheme);
+
 
 // ▼▼▼ 在 init() 的事件监听器区域，粘贴下面这几行 ▼▼▼
 // 绑定消息操作菜单中的“引用”按钮
