@@ -1,0 +1,13 @@
+---
+alwaysApply: true
+---
+
+项目介绍：此项目为重写C:\Projects\eephone\V0.03_phone.html
+
+要求：根据C:\Projects\eephone\V0.03_phone.html文件，重新在C:\Projects\eephone\lingki.html中模仿此项目的所有ui 和 功能.
+
+重写过程：
+-每次重写1000行代码左右，确保所转代码的完整性就行，按照C:\Projects\eephone\V0.03_phone.html项目的顺序.
+-每次重写后，需要更新tasks.md当前进度，并且详细记录重写了哪些代码，以便于下次重写理解。
+-重写后的代码采用当代流行的风格，但是不更改功能和ui。
+-每次重写都需要保证新代码的原有性，以便于以后商用无纠纷
